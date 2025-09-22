@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа 5 - Фильтры</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon-16x16.png">
+    <link rel="icon" href="../favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        h1 {
+            color: #0066cc;
+            margin-bottom: 30px;
+        }
+        
+        .image-container {
+            position: relative;
+            margin: 30px auto;
+            width: fit-content;
+        }
+        
+        #filtered-image {
+            max-width: 100%;
+            height: auto;
+            border: 2px solid #333;
+            transition: filter 0.3s ease;
+        }
+        
+        .filter-info {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border-radius: 5px;
+            font-size: 18px;
+        }
+        
+        .instructions {
+            margin: 30px 0;
+            padding: 15px;
+            background-color: #e6f7ff;
+            border-left: 4px solid #0066cc;
+            text-align: left;
+        }
+        
+        footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #ccc;
+            font-size: 14px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>НГТУ, ФБ, Лабораторная работа 5</h1>
+    
+    <div class="instructions">
+        <h3>Как использовать:</h3>
+        <ul>
+            <li>Наведите курсор на изображение - применится фильтр размытия (blur)</li>
+            <li>Чем левее курсор, тем слабее эффект</li>
+            <li>Чем правее курсор, тем сильнее эффект</li>
+            <li>Удерживайте клавиши для других фильтров:</li>
+            <ul>
+                <li><strong>Ctrl</strong> - черно-белый фильтр (grayscale)</li>
+                <li><strong>Alt</strong> - изменение оттенка (hue-rotate)</li>
+                <li><strong>Shift</strong> - инверсия цветов (invert)</li>
+            </ul>
+        </ul>
+    </div>
+    
+    <div class="image-container">
+        <img id="filtered-image" src="diplomat.jpg" alt="diplomat">
+        <div class="filter-info" id="filter-info">Фильтр не активен</div>
+    </div>
+    
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        const image = document.getElementById('filtered-image');
+        const filterInfo = document.getElementById('filter-info');
+        
+        image.addEventListener('mousemove', (e) => {
+            const rect = image.getBoundingClientRect();
+            const xPos = e.clientX - rect.left; // Позиция мыши относительно изображения
+            const width = rect.width;
+            const ratio = xPos / width; // Отношение позиции к ширине (0-1)
+            
+            let filter = '';
+            let filterName = '';
+            let filterValue = 0;
+            
+            if (e.ctrlKey) {
+                // Градации серого (Ctrl)
+                filterValue = Math.round(ratio * 100);
+                filter = `grayscale(${filterValue}%)`;
+                filterName = 'Черно-белый фильтр';
+            } 
+            else if (e.altKey) {
+                // Изменение оттенка (Alt)
+                filterValue = Math.round(ratio * 360);
+                filter = `hue-rotate(${filterValue}deg)`;
+                filterName = 'Изменение оттенка';
+            } 
+            else if (e.shiftKey) {
+                // Инверсия цветов (Shift)
+                filterValue = Math.round(ratio * 100);
+                filter = `invert(${filterValue}%)`;
+                filterName = 'Инверсия цветов';
+            } 
+            else {
+                // Размытие по умолчанию
+                filterValue = Math.round(ratio * 20);
+                filter = `blur(${filterValue}px)`;
+                filterName = 'Размытие';
+            }
+            
+            image.style.filter = filter;
+            filterInfo.textContent = `${filterName}: ${filterValue}`;
+        });
+        
+        image.addEventListener('mouseleave', () => {
+            image.style.filter = 'none';
+            filterInfo.textContent = 'Фильтр не активен';
+        });
+    </script>
+</body>
+</html>
