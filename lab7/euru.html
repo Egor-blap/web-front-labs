@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курс евро ЦБ РФ</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF5EE;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            background-color: #FFF5EE;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: block;
+            margin: 20px auto;
+        }
+        
+        button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .exchange-info {
+            background-color: #FFE4B5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            border: 1px solid #8B0000;
+        }
+        
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #8B0000;
+        }
+        
+        .positive {
+            color: #006400;
+            font-weight: bold;
+        }
+        
+        .negative {
+            color: #8B0000;
+            font-weight: bold;
+        }
+        
+        .credits {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>НГТУ, ФБИ-34, Лабораторная работа 7</h1>
+        <p>Курс евро ЦБ РФ</p>
+    </header>
+    
+    <div class="container">
+        <button onclick="getEuroExchangeRate()">Получить курс евро</button>
+        <div id="loading" class="loading" style="display: none;">Загрузка данных...</div>
+        <div id="exchange-result" class="exchange-info" style="display: none;"></div>
+        <div class="credits">
+            <a href="https://www.cbr-xml-daily.ru/">Курсы ЦБ РФ</a>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        function getEuroExchangeRate() {
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+            const resultDiv = document.getElementById('exchange-result');
+            
+            // Скрываем кнопку и показываем загрузку
+            button.style.display = 'none';
+            loading.style.display = 'block';
+            resultDiv.style.display = 'none';
+            
+            const url = 'https://www.cbr-xml-daily.ru/daily_json.js';
+            
+            fetch(url)
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки данных: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(json) {
+                // Получаем данные о евро
+                const euro = json.Valute.EUR;
+                const currentRate = euro.Value;
+                const previousRate = euro.Previous;
+                const difference = currentRate - previousRate;
+                const date = new Date(json.Date).toLocaleDateString('ru-RU');
+                
+                // Формируем результат
+                let resultHTML = `
+                    <p>Дата: <strong>${date}</strong></p>
+                    <p>Текущий курс: <strong>${currentRate.toFixed(2)} руб.</strong></p>
+                    <p>Предыдущий курс: <strong>${previousRate.toFixed(2)} руб.</strong></p>
+                    <p>Изменение: <span class="${difference > 0 ? 'positive' : difference < 0 ? 'negative' : ''}">
+                        ${difference > 0 ? '+' : ''}${difference.toFixed(2)} руб.
+                        ${difference > 0 ? '↑' : difference < 0 ? '↓' : '→'}
+                    </span></p>
+                `;
+                
+                resultDiv.innerHTML = resultHTML;
+                resultDiv.style.display = 'block';
+            })
+            .catch(function(error) {
+                resultDiv.innerHTML = `<p style="color: #8B0000;">Ошибка: ${error.message}</p>`;
+                resultDiv.style.display = 'block';
+            })
+            .finally(function() {
+                loading.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
