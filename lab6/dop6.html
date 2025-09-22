@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Диаграмма температур</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header, footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #137ed6;
+            color: white;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .chart-container {
+            display: flex;
+            height: 400px;
+            align-items: flex-end;
+            justify-content: space-around;
+            margin: 40px 0;
+            border-bottom: 2px solid #333;
+            position: relative;
+        }
+        .day-column {
+            width: 20px;
+            background-color: #3498db;
+            margin: 0 2px;
+            position: relative;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .min-temp {
+            background-color: #2980b9;
+            width: 100%;
+        }
+        .selected {
+            background-color: #e74c3c;
+        }
+        .selected .min-temp {
+            background-color: #c0392b;
+        }
+        .day-label {
+            position: absolute;
+            bottom: -25px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+        }
+        .temp-label {
+            position: absolute;
+            top: -20px;
+            width: 100%;
+            text-align: center;
+            font-size: 12px;
+        }
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+        }
+        input {
+            padding: 8px;
+            width: 50px;
+            text-align: center;
+        }
+        .day-info {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 18px;
+            min-height: 50px;
+        }
+        .y-axis {
+            position: absolute;
+            left: -40px;
+            top: 0;
+            bottom: 0;
+            width: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .y-label {
+            text-align: right;
+            padding-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HГТУ, ФБИ-34, Лабораторная работа 6</h1>
+    <h1>Диаграмма температур за месяц</h1>
+    
+    <div class="chart-container" id="chart">
+        <!-- Диаграмма будет сгенерирована скриптом -->
+    </div>
+    
+    <div class="controls">
+        <label for="day-input">Введите номер дня (1-30):</label>
+        <input type="number" id="day-input" min="1" max="30" value="1">
+    </div>
+    
+    <div class="day-info" id="day-info">
+        Выберите день для просмотра температур
+    </div>
+
+    <script>
+        // Генерация случайных температур
+        function generateTemperatures() {
+            const temps = [];
+            for (let i = 0; i < 30; i++) {
+                const minTemp = Math.floor(Math.random() * 15) - 10; // от -10 до +5
+                const maxTemp = minTemp + Math.floor(Math.random() * 10) + 5; // на 5-15 градусов выше минимума
+                temps.push({ 
+                    day: i + 1, 
+                    min: minTemp, 
+                    max: maxTemp 
+                });
+            }
+            return temps;
+        }
+
+        // Создание диаграммы
+        function createChart() {
+            const chart = document.getElementById('chart');
+            chart.innerHTML = '';
+            
+            // Создаем ось Y
+            const yAxis = document.createElement('div');
+            yAxis.className = 'y-axis';
+            for (let i = 30; i >= -10; i -= 5) {
+                const yLabel = document.createElement('div');
+                yLabel.className = 'y-label';
+                yLabel.textContent = i + '°C';
+                yAxis.appendChild(yLabel);
+            }
+            chart.appendChild(yAxis);
+            
+            // Создаем столбцы для каждого дня
+            temperatures.forEach(temp => {
+                const maxHeight = (temp.max + 10) * 10; // масштабируем для визуализации
+                const minHeight = (temp.min + 10) * 10;
+                
+                const column = document.createElement('div');
+                column.className = 'day-column';
+                column.dataset.day = temp.day;
+                column.style.height = maxHeight + 'px';
+                
+                const minBar = document.createElement('div');
+                minBar.className = 'min-temp';
+                minBar.style.height = minHeight + 'px';
+                column.appendChild(minBar);
+                
+                const dayLabel = document.createElement('div');
+                dayLabel.className = 'day-label';
+                dayLabel.textContent = temp.day;
+                column.appendChild(dayLabel);
+                
+                const tempLabel = document.createElement('div');
+                tempLabel.className = 'temp-label';
+                tempLabel.textContent = `${temp.max}°/${temp.min}°`;
+                column.appendChild(tempLabel);
+                
+                column.addEventListener('click', () => {
+                    selectDay(temp.day);
+                });
+                
+                chart.appendChild(column);
+            });
+        }
+
+        // Выбор дня
+        function selectDay(day) {
+            // Снимаем выделение со всех столбцов
+            document.querySelectorAll('.day-column').forEach(col => {
+                col.classList.remove('selected');
+            });
+            
+            // Выделяем выбранный столбец
+            const selectedColumn = document.querySelector(`.day-column[data-day="${day}"]`);
+            if (selectedColumn) {
+                selectedColumn.classList.add('selected');
+                
+                // Прокручиваем к выбранному столбцу
+                selectedColumn.scrollIntoView({ 
+                    behavior: 'smooth', 
+                    block: 'nearest', 
+                    inline: 'center' 
+                });
+                
+                // Показываем информацию о дне
+                const dayData = temperatures.find(t => t.day == day);
+                document.getElementById('day-info').innerHTML = `
+                    <strong>День ${day}:</strong><br>
+                    Максимальная температура: ${dayData.max}°C<br>
+                    Минимальная температура: ${dayData.min}°C
+                `;
+            }
+        }
+
+        // Инициализация
+        const temperatures = generateTemperatures();
+        createChart();
+        
+        // Обработчик ввода дня
+        document.getElementById('day-input').addEventListener('change', (e) => {
+            const day = parseInt(e.target.value);
+            if (day >= 1 && day <= 30) {
+                selectDay(day);
+            }
+        });
+        
+        // Выбираем первый день по умолчанию
+        selectDay(1);
+    </script>
+
+<footer>
+    &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+</footer>
+
+</body>
+</html>
