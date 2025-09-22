@@ -1,0 +1,344 @@
+/* Общие стили */
+body {
+    background-color: #e0f7fa;
+    color: #333;
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+    margin: 0;
+    padding: 0;
+}
+
+/* Стили для ссылок с анимацией */
+a:link {
+    color: #00796b;
+    text-decoration: none;
+    transition: all 0.5s ease-in-out 1s; 
+}
+
+a:visited {
+    color: #4a148c;
+    text-decoration: line-through;
+}
+
+a:hover {
+    color: #d32f2f;
+    text-decoration: underline;
+    background-color: #ffebee;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+    transform: scale(1.02);
+    transition: all 0.3s ease-in-out 0s;
+}
+
+a:active {
+    color: #000000;
+    opacity: 0.7;
+    transform: scale(0.98);
+    transition: all 0.1s linear;
+}
+
+.paragraph {
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    padding: 7px;
+    width: 500px;
+    height: 200px; /* Основная высота */
+    overflow: auto;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Для эксперимента с высотой 100px */
+.paragraph.small {
+    height: 100px;
+}
+
+/* Стили для текста внутри абзацев */
+.paragraph p {
+    margin: 0;
+    line-height: 1.5;
+    color: #333;
+}
+
+header {
+    background-color: #0277bd;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    font-size: 24px;
+}
+
+main {
+    padding: 20px;
+    background-color: #ffffff;
+    margin: 10px 20px 45px;
+}
+
+div.menu {
+    border: 7px solid #00880080;
+    border-radius: 5px;
+    width: 300px;
+    margin: 0 auto;
+}
+
+div.menu:hover{
+    background-color: #ffffff30;
+    box-shadow: 0 0 15px #00000030;
+}
+
+
+footer {
+    background-color: #004d40;
+    color: white;
+    text-align: center;
+    padding: 2px;
+    font-size: 16px;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+}
+
+a {
+    color: #00796b; /* Темно-зеленый цвет ссылок */
+    text-decoration: none; /* Убираем подчеркивание */
+}
+
+/* 1. Эйнштейн */
+.citation.einstein {
+    background: linear-gradient(45deg, 
+      #ff0000, #ff8000, #ffff00, #00ff00, 
+      #0000ff, #4b0082, #ee82ee);
+    border: 3px solid #2c3e50;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    box-shadow: 0 0 25px rgba(0,0,0,0.3);
+  }
+
+/* 2. Достоевский */
+.citation.dostoevsky {
+    background: linear-gradient(135deg, #1a1a1a, #3d3d3d);
+    border: 2px solid #d4af37;
+    color: #d4af37;
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+  }
+  
+  /* 3. Да Винчи */
+  .citation.davinci {
+    background: linear-gradient(to right, #e0f7fa, #b2ebf2);
+    border: 1px dashed #00838f;
+    box-shadow: 3px 3px 10px rgba(0,131,143,0.3);
+  }
+  
+  /* 4. Тэтчер */
+  .citation.thatcher {
+    background: linear-gradient(135deg, #012169, #c8102e, white);
+    border: 3px double #012169;
+    color: white;
+    text-shadow: 1px 1px 2px black;
+  }
+  
+  /* 5. Брюс Ли */
+  .citation.brucelee {
+    background: linear-gradient(to bottom, #ff0000, #ffcc00);
+    border: 3px groove #000;
+    box-shadow: 0 0 20px rgba(255,0,0,0.5);
+  }
+  
+  /* 6. Мать Тереза */
+  .citation.teresa {
+    background: linear-gradient(to right, #f8bbd0, #e1bee7);
+    border: 2px dotted #ad1457;
+  }
+  
+  /* 7. Черчилль */
+  .citation.churchill {
+    background: linear-gradient(to right, #f5f5f5, #e0e0e0);
+    border: 4px ridge #795548;
+    box-shadow: 10px 10px 5px rgba(0,0,0,0.1);
+  }
+  
+  /* 8. Конфуций */
+  .citation.confucius {
+    background: linear-gradient(to bottom, #ffecb3, #d7ccc8);
+    border: 3px solid #5d4037;
+    font-family: "SimSun", serif;
+  }
+  
+  /* 9. Пикассо */
+  .citation.picasso {
+    background: linear-gradient(45deg, #ff5722, #ffc107, #8bc34a, #2196f3);
+    border: 5px solid #000;
+  }
+  
+  /* 10. Чаплин */
+  .citation.chaplin {
+    background: linear-gradient(to right, #000, #333, #000);
+    color: white;
+    border: 2px solid white;
+    box-shadow: 0 0 15px rgba(255,255,255,0.3);
+  }
+  
+  /* 11. Шанель */
+  .citation.chanel {
+    background: linear-gradient(to right, #000, #333);
+    color: white;
+    border: 1px solid #fff;
+    box-shadow: 0 0 10px rgba(255,255,255,0.5);
+  }
+  
+  /* Общие стили для текста и автора */
+  .text {
+    font-size: 26px;
+    margin-bottom: 15px;
+    padding: 15px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .author {
+    font-size: 24px;
+    font-style: italic;
+    padding: 10px;
+    text-align: right;
+    opacity: 0.9;
+  }
+
+.discount {
+    margin: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.discount h2 {
+    color: #2c3e50;
+    cursor: pointer;
+}
+
+.discount .content {
+    display: none;
+}
+
+.discount h2:hover + .content {
+    display: block;
+    color: #34495e;
+}
+
+/* Блоки с inline-block */
+.block-container {
+    margin: 20px;
+}
+
+.block {
+    display: inline-block;
+    width: 250px;
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #3498db;
+    border-radius: 8px;
+    vertical-align: top;
+    background-color: #f8f9fa;
+    transition: all 0.3s ease;
+}
+
+.block:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.block h3 {
+    color: #2980b9;
+    margin-bottom: 10px;
+}
+
+b {
+    display: none;
+}
+
+b.custom {
+    display: inline-block;
+    background-color: #f1c40f;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* Общие стили */
+.discount {
+    display: inline-block;
+    width: 280px;
+    margin: 15px;
+    padding: 25px;
+    border-radius: 12px;
+    vertical-align: top;
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    background: linear-gradient(145deg, #ffffff, #f8f9fa);
+}
+
+.discount h1 {
+    color: #fff;
+    font-size: 1.3em;
+    margin: -25px -25px 20px -25px;
+    padding: 15px 25px;
+    border-radius: 12px 12px 0 0;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+}
+
+.discount div {
+    color: #495057;
+    line-height: 1.7;
+    font-size: 0.95em;
+    padding: 10px 0;
+}
+/* Стили для текстовых блоков */
+.text-block {
+    margin: 20px auto;
+    padding: 20px;
+    max-height: 80px;
+    overflow: hidden;
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: all 2s ease;
+}
+
+.text-block:hover {
+    max-height: 1000px;
+    background: #f8f9ff;
+    border-color: #4a90e2;
+}
+
+.text-block .title {
+    color: #333;
+    font-size: 1.8rem;
+    text-align: center;
+    margin: 0 0 15px 0;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.text-block:hover .title {
+    color: #d35400;
+    border-bottom-color: #ffd6b3;
+}
+
+.text-block .content {
+    color: #555;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: all 2s ease;
+}
+
+.text-block:hover .content {
+    opacity: 1;
+    transform: translateY(0);
+    color: #ff0000; 
+}
+
+.text-block .content p {
+    margin: 15px 0;
+    line-height: 1.6;
+}
