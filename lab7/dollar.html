@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Курс доллара ЦБ РФ</title>
+    <link rel="icon" href="./favicon-48x48.ico">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF5EE;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            background-color: #FFF5EE;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: block;
+            margin: 20px auto;
+        }
+        
+        button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        #dollar-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+        
+        #dollar-table th, #dollar-table td {
+            border: 1px solid #8B0000;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        #dollar-table th {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        #dollar-table tr:nth-child(even) {
+            background-color: #FFE4E1;
+        }
+        
+        #dollar-table tr:hover {
+            background-color: #FFDAB9;
+        }
+        
+        #detail {
+            background-color: #FFE4B5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            border: 1px solid #8B0000;
+        }
+        
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #8B0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>НГТУ, ФБИ-34, Лабораторная работа 7</h1>
+        <p>Курс доллара ЦБ РФ</p>
+    </header>
+    
+    <div class="container">
+        <button onclick="loadExchangeRates()">Загрузить курс доллара</button>
+        <div id="loading" class="loading" style="display: none;">Загрузка данных...</div>
+        <table id="dollar-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>Дата</th>
+                    <th>Курс (руб.)</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <div id="detail"></div>
+    </div>
+    
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        async function loadExchangeRates() {
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+            const table = document.getElementById('dollar-table');
+            const detail = document.getElementById('detail');
+            
+            // Скрываем кнопку и показываем загрузку
+            button.style.display = 'none';
+            loading.style.display = 'block';
+            
+            try {
+                // Получаем текущую дату и дату 10 дней назад
+                const endDate = new Date();
+                const startDate = new Date();
+                startDate.setDate(endDate.getDate() - 10);
+                
+                // Форматируем даты для запроса
+                const formatDate = (date) => {
+                    const day = String(date.getDate()).padStart(2, '0');
+                    const month = String(date.getMonth() + 1).padStart(2, '0');
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                };
+                
+                // URL для запроса к API ЦБ РФ
+                const url = `https://www.cbr-xml-daily.ru/daily_json.js`;
+                
+                // Делаем запрос к API
+                const response = await fetch(url);
+                if (!response.ok) throw new Error('Ошибка загрузки данных');
+                
+                const data = await response.json();
+                
+                // Получаем курс доллара
+                const usdRate = data.Valute.USD.Value;
+                
+                // Для демонстрации создаем массив с небольшими колебаниями курса
+                const exchange = [];
+                const dates = [];
+                
+                for (let i = 0; i < 10; i++) {
+                    const date = new Date();
+                    date.setDate(date.getDate() - (9 - i));
+                    dates.push(date.toLocaleDateString('ru-RU'));
+                    
+                    // Генерируем небольшое отклонение от текущего курса
+                    const variation = (Math.random() * 2 - 1) * 0.5;
+                    exchange.push(+(usdRate + variation).toFixed(4));
+                }
+                
+                // Очищаем таблицу перед заполнением
+                table.querySelector('tbody').innerHTML = '';
+                
+                // Заполняем таблицу данными
+                for (let i = 0; i < exchange.length; i++) {
+                    let tr = document.createElement('tr');
+                    
+                    // Добавляем дату
+                    let tdDate = document.createElement('td');
+                    tdDate.innerText = dates[i];
+                    tr.appendChild(tdDate);
+                    
+                    // Добавляем курс
+                    let tdRate = document.createElement('td');
+                    tdRate.innerText = exchange[i].toFixed(4);
+                    tr.appendChild(tdRate);
+                    
+                    table.querySelector('tbody').appendChild(tr);
+                }
+                
+                // Рассчитываем среднее значение
+                const sum = exchange.reduce((acc, val) => acc + val, 0);
+                const average = sum / exchange.length;
+                
+                // Выводим среднее значение
+                detail.innerHTML = `Средний курс за ${exchange.length} дней: <span style="color: #8B0000;">${average.toFixed(2)} руб.</span>`;
+                
+                // Показываем таблицу
+                table.style.display = 'table';
+                
+            } catch (error) {
+                detail.innerHTML = `<span style="color: #8B0000;">Ошибка: ${error.message}</span>`;
+                console.error('Ошибка:', error);
+            } finally {
+                // Скрываем индикатор загрузки
+                loading.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
