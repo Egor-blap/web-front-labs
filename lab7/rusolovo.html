@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Котировки акций компании Русолово</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF5EE;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            background-color: #FFF5EE;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: block;
+            margin: 20px auto;
+        }
+        
+        button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        #stock-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+        }
+        
+        #stock-table th, #stock-table td {
+            border: 1px solid #8B0000;
+            padding: 8px;
+            text-align: center;
+        }
+        
+        #stock-table th {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        #stock-table tr:nth-child(even) {
+            background-color: #FFE4E1;
+        }
+        
+        #stock-table tr:hover {
+            background-color: #FFDAB9;
+        }
+        
+        .stats {
+            background-color: #FFE4B5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            border: 1px solid #8B0000;
+        }
+        
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #8B0000;
+        }
+        
+        .positive {
+            color: #006400;
+            font-weight: bold;
+        }
+        
+        .negative {
+            color: #8B0000;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>НГТУ, ФБИ-34, Лабораторная работа 7</h1>
+        <p>Котировки акций компании Русолово</p>
+    </header>
+    
+    <div class="container">
+        <button onclick="showStockData()">Показать курс акций</button>
+        <div id="loading" class="loading" style="display: none;">Загрузка данных...</div>
+        <div id="stock-content" style="display: none;">
+            <table id="stock-table">
+                <thead>
+                    <tr>
+                        <th>Дата</th>
+                        <th>Цена, руб</th>
+                        <th>Изменение</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div id="stats" class="stats"></div>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        function showStockData() {
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+            const content = document.getElementById('stock-content');
+            
+            // Скрываем кнопку и показываем загрузку
+            button.style.display = 'none';
+            loading.style.display = 'block';
+            
+            // Имитируем загрузку данных
+            setTimeout(() => {
+                // Пример данных (даты и цены)
+                const dates = [
+                    "02.01.2025", "09.01.2025", "16.01.2025", "23.01.2025", "30.01.2025",
+                    "06.02.2025", "13.02.2025", "20.02.2025", "27.02.2025", "06.03.2025"
+                ];
+                const prices = [150.50, 152.30, 151.20, 153.75, 155.00, 154.40, 156.90, 158.20, 157.50, 159.80];
+
+                // Очищаем таблицу перед заполнением
+                const tbody = document.querySelector('#stock-table tbody');
+                tbody.innerHTML = '';
+
+                // Заполняем таблицу данными
+                for (let i = 0; i < dates.length; i++) {
+                    let tr = document.createElement('tr');
+                    
+                    // Добавляем дату
+                    let tdDate = document.createElement('td');
+                    tdDate.innerText = dates[i];
+                    tr.appendChild(tdDate);
+                    
+                    // Добавляем цену
+                    let tdPrice = document.createElement('td');
+                    tdPrice.innerText = prices[i].toFixed(2);
+                    tr.appendChild(tdPrice);
+                    
+                    // Добавляем изменение
+                    let tdChange = document.createElement('td');
+                    if (i === 0) {
+                        tdChange.innerText = "—";
+                    } else {
+                        const change = prices[i] - prices[i-1];
+                        tdChange.innerText = change.toFixed(2);
+                        if (change > 0) {
+                            tdChange.className = "positive";
+                            tdChange.innerHTML = "+" + change.toFixed(2);
+                        } else if (change < 0) {
+                            tdChange.className = "negative";
+                        }
+                    }
+                    tr.appendChild(tdChange);
+                    
+                    tbody.appendChild(tr);
+                }
+
+                // Рассчитываем статистику
+                const sum = prices.reduce((a, b) => a + b, 0);
+                const average = (sum / prices.length).toFixed(2);
+                const max = Math.max(...prices).toFixed(2);
+                const min = Math.min(...prices).toFixed(2);
+
+                // Выводим статистику
+                document.getElementById('stats').innerHTML = `
+                    <p>Среднее значение: <span style="color: #8B0000;">${average} руб.</span></p>
+                    <p>Минимальное значение: <span style="color: #8B0000;">${min} руб.</span></p>
+                    <p>Максимальное значение: <span style="color: #8B0000;">${max} руб.</span></p>
+                `;
+
+                // Показываем контент
+                loading.style.display = 'none';
+                content.style.display = 'block';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
