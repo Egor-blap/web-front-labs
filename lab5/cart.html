@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Манилов Егор Олегович. Лабораторная работа 5</title>
+        <link rel="stylesheet" href="../main.css">
+        <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+        <link rel="icon" href="../favicon-16x16.png">
+        <link rel="icon" href="../favicon-32x32.png">
+        <style>
+            header {
+                text-align: center;
+                padding: 10px;
+                background-color: #0044ff;
+                margin-bottom: 20px;
+            }
+            footer {
+                text-align: center;
+                padding: 10px;
+                background-color: #003cff;
+                margin-top: 20px;
+            }
+            .container {
+                width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 2px solid #8B0000;
+                border-radius: 10px;
+                background-color: #FFF5EE;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+            h1 {
+                color: #8B0000;
+                text-align: center;
+                margin-bottom: 30px;
+            }
+            .product {
+                margin-bottom: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+            .product-name {
+                font-size: 18px;
+                font-weight: bold;
+                color: #8B0000;
+                width: 150px;
+            }
+            .product-price {
+                font-size: 16px;
+                color: #555;
+                width: 100px;
+            }
+            input[type="number"] {
+                width: 100px;
+                padding: 8px;
+                border: 1px solid #8B0000;
+                border-radius: 5px;
+                text-align: center;
+            }
+            .buttons {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 30px;
+            }
+            button {
+                padding: 10px 20px;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                font-weight: bold;
+                transition: all 0.3s;
+            }
+            #calculate {
+                background-color: #8B0000;
+                color: white;
+            }
+            #calculate:hover {
+                background-color: #A52A2A;
+            }
+            #clear {
+                background-color: #0f25a3;
+                color: white;
+            }
+            #clear:hover {
+                background-color: #0c89d2;
+            }
+            #output {
+                margin-top: 20px;
+                padding: 10px;
+                font-size: 18px;
+                font-weight: bold;
+                color: #8B0000;
+                text-align: center;
+                min-height: 30px;
+            }
+        </style>
+
+        <script>
+            function calculateTotal() {
+                // Получаем значения из полей ввода
+                const apples = parseInt(document.getElementById('apples').value) || 0;
+                const pears = parseInt(document.getElementById('pears').value) || 0;
+                const oranges = parseInt(document.getElementById('oranges').value) || 0;
+                const melons = parseInt(document.getElementById('melons').value) || 0;
+                
+                // Рассчитываем общую стоимость
+                const total = (apples * 100) + (pears * 80) + (oranges * 150) + (melons * 300);
+                
+                // Выводим результат
+                document.getElementById('output').textContent = `Общая цена: ${total} рублей`;
+            }
+
+            function clearFields() {
+                // Очищаем поля ввода
+                document.getElementById('apples').value = '';
+                document.getElementById('pears').value = '';
+                document.getElementById('oranges').value = '';
+                document.getElementById('melons').value = '';
+                
+                // Очищаем вывод
+                document.getElementById('output').textContent = '';
+            }
+        </script>
+    </head>
+
+    <body>
+        <header>
+            НГТУ, ФБ, Лабораторная работа 5
+            <hr>
+        </header>
+
+        <main>
+            <div class="container">
+                <h1>Корзина товаров</h1>
+                
+                <div class="product">
+                    <span class="product-name">Яблоки</span>
+                    <span class="product-price">100 руб/шт</span>
+                    <input type="number" id="apples" placeholder="Количество" min="0" oninput="this.value = Math.max(this.value, 0)">
+                </div>
+                
+                <div class="product">
+                    <span class="product-name">Груши</span>
+                    <span class="product-price">80 руб/шт</span>
+                    <input type="number" id="pears" placeholder="Количество" min="0" oninput="this.value = Math.max(this.value, 0)">
+                </div>
+                
+                <div class="product">
+                    <span class="product-name">Апельсины</span>
+                    <span class="product-price">150 руб/шт</span>
+                    <input type="number" id="oranges" placeholder="Количество" min="0" oninput="this.value = Math.max(this.value, 0)">
+                </div>
+                
+                <div class="product">
+                    <span class="product-name">Дыни</span>
+                    <span class="product-price">300 руб/шт</span>
+                    <input type="number" id="melons" placeholder="Количество" min="0" oninput="this.value = Math.max(this.value, 0)">
+                </div>
+                
+                <div class="buttons">
+                    <button id="calculate" onclick="calculateTotal()">Рассчитать</button>
+                    <button id="clear" onclick="clearFields()">Очистить</button>
+                </div>
+                
+                <div id="output"></div>
+            </div>
+        </main>
+
+        <footer>
+            <hr>
+            &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+        </footer>
+    </body>
+</html>
