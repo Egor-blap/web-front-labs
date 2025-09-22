@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Калькулятор RUB ⇄ BYN</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css"> <!-- Подключаем общие стили -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+        }
+        .calc-container {
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 8px;
+            margin: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 180px;
+        }
+        button {
+            padding: 8px 15px;
+            margin: 8px;
+            border: none;
+            background: #444;
+            color: #fff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #ccc;
+            color: #333;
+        }
+        #chart {
+            width: 100%;
+            max-width: 800px;
+            margin: 30px auto;
+            display: block;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .rate-info {
+            margin: 15px 0;
+            font-size: 1.1em;
+        }
+
+        /* Бургер */
+        .hamburger {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 1001;
+          background: none;
+          border: none;
+          cursor: pointer;
+          padding: 10px;
+        }
+        .hamburger div {
+          width: 30px;
+          height: 4px;
+          background-color: #333;
+          margin: 5px 0;
+          transition: 0.4s;
+        }
+
+        /* Боковое меню */
+        .side-menu {
+          height: 100%;
+          width: 250px;
+          position: fixed;
+          top: 0;
+          right: -250px;
+          background-color: #444;
+          color: white;
+          overflow-x: hidden;
+          padding-top: 60px;
+          transition: right 0.4s;
+          z-index: 1000;
+        }
+        .side-menu a {
+          display: block;
+          color: white;
+          padding: 15px 20px;
+          text-decoration: none;
+          font-weight: bold;
+        }
+        .side-menu a:hover {
+          background-color: #ccc;
+          color: #333;
+        }
+        .side-menu.open {
+          right: 0;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+  <img src="el5.jpg" alt="Логотип ЭЛ5-Энерго" class="logo">
+  <h1>ЭЛ5-Энерго</h1>
+</header>
+
+<!-- Кнопка бургер -->
+<button class="hamburger" onclick="toggleMenu()">
+  <div></div>
+  <div></div>
+  <div></div>
+</button>
+
+<div class="side-menu" id="sideMenu">
+  <a href="company.html">Главная</a>
+  <a href="news.html">Новости</a>
+  <a href="currency.html" class="active">Курс валют</a>
+  <a href="contacts.html">Контакты</a>
+  <a href="video.html">Видео</a>
+</div>
+
+<main>
+    <h1>Калькулятор: RUB ⇄ BYN</h1>
+    
+    <div class="rate-info">
+        Текущий курс: <span id="rate">загрузка...</span>
+    </div>
+
+    <div class="calc-container">
+        <div>
+            <label>Российские рубли (RUB): 
+                <input type="number" id="rub" placeholder="Введите RUB" min="0">
+            </label>
+            <button onclick="toByn()">→ BYN</button>
+        </div>
+        <div>
+            <label>Белорусские рубли (BYN): 
+                <input type="number" id="byn" placeholder="Введите BYN" min="0">
+            </label>
+            <button onclick="toRub()">→ RUB</button>
+        </div>
+        <p id="result" style="font-weight:bold; margin-top:15px;"></p>
+    </div>
+
+    <h2>Динамика курса за месяц</h2>
+    <canvas id="chart" width="800" height="400"></canvas>
+</main>
+
+<footer>
+  &copy; 2025 ЭЛ5-Энерго | Манилов Егор Олегович
+</footer>
+
+<script>
+    let rate = null;
+
+    // Загрузка курса
+    async function loadRate() {
+        try {
+            const res = await fetch("https://www.cbr-xml-daily.ru/daily_json.js");
+            const data = await res.json();
+            rate = data.Valute.BYN.Value / data.Valute.BYN.Nominal;
+            document.getElementById("rate").innerHTML = 
+                `1 BYN = ${rate.toFixed(4)} RUB<br>
+                 1 RUB = ${(1/rate).toFixed(4)} BYN`;
+        } catch (error) {
+            document.getElementById("rate").textContent = 
+                "Ошибка загрузки курса. Используется курс 1 BYN = 28.50 RUB";
+            rate = 28.50; // Значение по умолчанию
+        }
+    }
+
+    // Валидация ввода
+    function valid(num) {
+        return num !== "" && !isNaN(num) && parseFloat(num) >= 0;
+    }
+
+    // Конвертация RUB → BYN
+    async function toByn() {
+        if (!rate) await loadRate();
+        const rub = document.getElementById("rub").value;
+        
+        if (!valid(rub)) {
+            document.getElementById("result").textContent = "Введите корректную сумму в RUB";
+            return;
+        }
+        
+        const res = parseFloat(rub) / rate;
+        document.getElementById("result").innerHTML = 
+            `<strong>${rub} RUB = ${res.toFixed(2)} BYN</strong>`;
+        document.getElementById("byn").value = res.toFixed(2);
+    }
+
+    // Конвертация BYN → RUB
+    async function toRub() {
+        if (!rate) await loadRate();
+        const byn = document.getElementById("byn").value;
+        
+        if (!valid(byn)) {
+            document.getElementById("result").textContent = "Введите корректную сумму в BYN";
+            return;
+        }
+        
+        const res = parseFloat(byn) * rate;
+        document.getElementById("result").innerHTML = 
+            `<strong>${byn} BYN = ${res.toFixed(2)} RUB</strong>`;
+        document.getElementById("rub").value = res.toFixed(2);
+    }
+
+    // Загрузка данных для графика
+    async function loadChart() {
+        let labels = [];
+        let data = [];
+
+        for (let i = 30; i >= 0; i--) {
+            let date = new Date();
+            date.setDate(date.getDate() - i);
+            let dd = String(date.getDate()).padStart(2, '0');
+            let mm = String(date.getMonth() + 1).padStart(2, '0');
+            let yyyy = date.getFullYear();
+            let url = `https://www.cbr-xml-daily.ru/archive/${yyyy}/${mm}/${dd}/daily_json.js`;
+
+            try {
+                const res = await fetch(url);
+                if (res.ok) {
+                    const json = await res.json();
+                    let dayRate = json.Valute.BYN.Value / json.Valute.BYN.Nominal;
+                    labels.push(`${dd}.${mm}`);
+                    data.push(dayRate);
+                }
+            } catch {
+                console.log(`Нет данных за ${dd}.${mm}.${yyyy}`);
+            }
+        }
+
+        draw(labels, data);
+    }
+
+    function draw(labels, data) {
+        const ctx = document.getElementById('chart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Br к ₽',
+                    data: data,
+                    backgroundColor: 'rgba(150,150,150,0.5)',
+                    borderColor: 'rgba(100,100,100,1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                onClick: (e, el) => {
+                    if (el.length > 0) {
+                        const i = el[0].index;
+                        alert(`Дата: ${labels[i]}\nКурс: ${data[i].toFixed(4)} ₽`);
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false
+                    }
+                }
+            }
+        });
+    }
+
+    loadRate();
+    loadChart();
+
+    // Бургер-меню
+    function toggleMenu() {
+      const menu = document.querySelector('.side-menu');
+      menu.classList.toggle('open');
+    }
+</script>
+
+</body>
+</html>
