@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ЭЛ5-Энерго | Контакты</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      background-color: #f5f5f5; /* светло-серый фон */
+      color: #333;
+    }
+    
+    header {
+      background-color: #333; /* тёмно-серый */
+      color: white;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    
+    .logo {
+      height: 120px;
+      transition: transform 0.5s ease;
+    }
+    
+    .logo:hover {
+      transform: rotate(5deg) scale(1.05);
+    }
+    
+    /* Бургер */
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+    .hamburger div {
+      width: 30px;
+      height: 4px;
+      background-color: #fff;
+      margin: 5px 0;
+      transition: 0.4s;
+    }
+
+    /* Боковое меню */
+    .side-menu {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      right: -250px;
+      background-color: #333;
+      color: white;
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: right 0.4s;
+      z-index: 1000;
+    }
+    .side-menu a {
+      display: block;
+      color: white;
+      padding: 15px 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .side-menu a:hover {
+      background-color: #ccc;
+      color: #333;
+    }
+    .side-menu.open {
+      right: 0;
+    }
+    
+    /* Адаптивность */
+    @media (max-width: 768px) {
+      .desktop-menu {
+        display: none;
+      }
+      .burger-btn {
+        display: block;
+      }
+    }
+    
+    /* Стили для контактов */
+    .contact-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+    }
+    
+    .contact-info {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .contact-info h2 {
+      color: #333;
+      margin-top: 0;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #ccc;
+    }
+    
+    .contact-item {
+      margin-bottom: 20px;
+    }
+    
+    .contact-item h3 {
+      color: #444;
+      margin-bottom: 5px;
+    }
+    
+    .contact-item p {
+      margin: 0;
+    }
+    
+    .contact-item a {
+      color: #333;
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    
+    .contact-item a:hover {
+      color: #666;
+      text-decoration: underline;
+    }
+    
+    /* Стили для карты */
+    .map-container {
+      height: 500px;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .map-frame {
+      width: 100%;
+      height: 100%;
+      border: none;
+    }
+    
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      font-size: 0.9em;
+      text-align: center;
+      background-color: #333;
+      color: white;
+    }
+    
+    /* Адаптивность для контактов */
+    @media (max-width: 768px) {
+      .contact-container {
+        grid-template-columns: 1fr;
+      }
+      .map-container {
+        height: 400px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="el5.jpg" alt="Логотип ЭЛ5-Энерго" class="logo">
+  <h1>ЭЛ5-Энерго</h1>
+</header>
+
+<!-- Кнопка бургер -->
+<button class="hamburger" onclick="toggleMenu()">
+  <div></div>
+  <div></div>
+  <div></div>
+</button>
+
+<div class="side-menu" id="sideMenu">
+  <a href="company.html">О компании</a>
+  <a href="news.html">Новости</a>
+  <a href="currency.html">Курс валют</a>
+  <a href="contacts.html">Контакты</a>
+  <a href="video.html">Видео</a>
+</div>
+
+<main>
+  <div class="contact-container">
+    <div class="contact-info">
+      <h2>Контактная информация</h2>
+      
+      <div class="contact-item">
+        <h3>Головной офис в Москве</h3>
+        <p>115114, г. Москва, ул. Летниковская, д. 10, стр. 4</p>
+        <p>Бизнес-центр "Новоспасский двор"</p>
+      </div>
+      
+      <div class="contact-item">
+        <h3>Телефоны</h3>
+        <p><a href="tel:+74957879700">+7 (495) 787-97-00</a> - многоканальный</p>
+        <p><a href="tel:+74957879701">+7 (495) 787-97-01</a> - отдел продаж</p>
+        <p><a href="tel:+74957879702">+7 (495) 787-97-02</a> - пресс-служба</p>
+      </div>
+      
+      <div class="contact-item">
+        <h3>Электронная почта</h3>
+        <p><a href="mailto:info@el5-energo.ru">info@el5-energo.ru</a> - общие вопросы</p>
+        <p><a href="mailto:sales@el5-energo.ru">sales@el5-energo.ru</a> - коммерческие вопросы</p>
+        <p><a href="mailto:press@el5-energo.ru">press@el5-energo.ru</a> - для СМИ</p>
+      </div>
+      
+      <div class="contact-item">
+        <h3>Региональные представительства</h3>
+        <p><strong>Санкт-Петербург:</strong> наб. реки Фонтанки, 38</p>
+        <p><strong>Екатеринбург:</strong> ул. Малышева, 51</p>
+        <p><strong>Новосибирск:</strong> ул. Советская, 37</p>
+      </div>
+      
+      <div class="contact-item">
+        <h3>Режим работы</h3>
+        <p>Понедельник-четверг: 8:30 - 17:30</p>
+        <p>Пятница: 8:30 - 16:15</p>
+        <p>Суббота-воскресенье: выходной</p>
+      </div>
+      
+      <div class="contact-item">
+        <h3>Реквизиты</h3>
+        <p>ПАО "ЭЛ5-Энерго"</p>
+        <p>ИНН 7704721561 / КПП 770401001</p>
+        <p>ОГРН 1057746554971</p>
+      </div>
+    </div>
+    
+    <div class="map-container">
+      <!-- Яндекс.Карта -->
+      <iframe class="map-frame" src="https://yandex.ru/map-widget/v1/?um=constructor%3A1a2b3c4d5e6f7g8h9i0j&amp;source=constructor" frameborder="0"></iframe>
+    </div>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 ЭЛ5-Энерго | Манилов Егор Олегович
+</footer>
+
+<script>
+  // Бургер-меню
+  function toggleMenu() {
+    const menu = document.querySelector('.side-menu');
+    menu.classList.toggle('open');
+  }
+
+  // Кнопка «наверх»
+  const scrollTopBtn = document.createElement('button');
+  scrollTopBtn.innerHTML = '↑';
+  scrollTopBtn.classList.add('scroll-top');
+  document.body.appendChild(scrollTopBtn);
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+</script>
+
+</body>
+</html>
