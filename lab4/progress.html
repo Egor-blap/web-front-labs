@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Манилов Егор Олегович — Панель прогресса</title>
+    <link rel="stylesheet" href="../main.css">
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            text-align: left;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .lab-title {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .lab-title h1 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .lab-title ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .lab-title li {
+            margin: 5px 0;
+        }
+
+        .progress-container {
+            width: 300px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            text-align: center;
+        }
+
+        .progress-container h2 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(to right, #4CAF50, #8BC34A);
+            border-radius: 10px;
+            transition: width 0.1s linear;
+        }
+
+        .hold-button {
+            padding: 12px 25px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(33, 150, 243, 0.3);
+            transition: all 0.3s ease;
+            outline: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hold-button:hover {
+            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.4);
+            background: #1E88E5;
+        }
+
+        .hold-button:active {
+            box-shadow: none;
+        }
+
+        .checkbox {
+            margin-top: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .checkbox input {
+            margin-right: 8px;
+        }
+
+        footer {
+            background-color: #333;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        НГТУ, ФБ, Лабораторная работа 4
+    </header>
+
+    <main>
+        <div class="lab-title">
+            <h1>HГТУ, ФБ, Лабораторная работа 4</h1>
+            <ul>
+                <li>- Панель прогресса</li>
+            </ul>
+        </div>
+
+        <div class="progress-container">
+            <h2>Степень прогресса</h2>
+            
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            
+            <button class="hold-button" id="holdBtn">Нажмите и удерживайте</button>
+            
+            <div class="checkbox">
+                <input type="checkbox" id="progressCheckbox">
+                <label for="progressCheckbox"></label>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        const holdBtn = document.getElementById('holdBtn');
+        const progressFill = document.querySelector('.progress-fill');
+        const checkbox = document.getElementById('progressCheckbox');
+        
+        let holdInterval;
+        let progress = 0;
+        const totalTime = 5000; // 5 секунд
+        const intervalTime = 50; // интервал обновления
+        
+        holdBtn.addEventListener('mousedown', startProgress);
+        holdBtn.addEventListener('touchstart', startProgress);
+        
+        holdBtn.addEventListener('mouseup', stopProgress);
+        holdBtn.addEventListener('touchend', stopProgress);
+        holdBtn.addEventListener('mouseleave', stopProgress);
+        
+        function startProgress() {
+            progress = 0;
+            progressFill.style.width = '0%';
+            checkbox.checked = false;
+            
+            holdInterval = setInterval(() => {
+                progress += (intervalTime / totalTime) * 100;
+                if (progress >= 100) {
+                    progress = 100;
+                    checkbox.checked = true;
+                    clearInterval(holdInterval);
+                }
+                progressFill.style.width = progress + '%';
+            }, intervalTime);
+        }
+        
+        function stopProgress() {
+            clearInterval(holdInterval);
+            if (progress < 100) {
+                progressFill.style.width = '0%';
+            }
+        }
+    </script>
+</body>
+</html>
