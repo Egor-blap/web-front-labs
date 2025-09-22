@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз погоды в Новосибирске</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF5EE;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 500px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            background-color: #FFF5EE;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: block;
+            margin: 20px auto;
+        }
+        
+        button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .weather-info {
+            background-color: #FFE4B5;
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            border: 1px solid #8B0000;
+        }
+        
+        .weather-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+        
+        .weather-table th, .weather-table td {
+            border: 1px solid #8B0000;
+            padding: 8px;
+            text-align: center;
+            background-color: #FFF5EE;
+        }
+        
+        .weather-table th {
+            background-color: #8B0000;
+            color: white;
+        }
+        
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #8B0000;
+        }
+        
+        .credits {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>НГТУ, ФБИ-34, Лабораторная работа 7</h1>
+        <p>Прогноз погоды в Новосибирске</p>
+    </header>
+    
+    <div class="container">
+        <button onclick="getWeatherForecast()">Получить прогноз погоды</button>
+        <div id="loading" class="loading" style="display: none;">Загрузка данных...</div>
+        <div id="weather-result" class="weather-info" style="display: none;">
+            <h3 style="text-align: center; margin-top: 0;">Прогноз температуры на сегодня</h3>
+            <table class="weather-table">
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>Температура</th>
+                    </tr>
+                </thead>
+                <tbody id="weather-data">
+                </tbody>
+            </table>
+        </div>
+        <div class="credits">
+            <a href="https://open-meteo.com/" target="_blank">Данные предоставлены Open-Meteo.com</a>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        function getWeatherForecast() {
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+            const resultDiv = document.getElementById('weather-result');
+            const weatherData = document.getElementById('weather-data');
+            
+            // Скрываем кнопку и показываем загрузку
+            button.style.display = 'none';
+            loading.style.display = 'block';
+            resultDiv.style.display = 'none';
+            weatherData.innerHTML = '';
+            
+            // Координаты Новосибирска
+            const latitude = 55.0415;
+            const longitude = 82.9346;
+            
+            // URL для запроса прогноза погоды
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m&timezone=Asia%2FBangkok&forecast_days=1`;
+            
+            fetch(url)
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки данных: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(json) {
+                // Получаем массивы времени и температуры
+                const times = json.hourly.time;
+                const temperatures = json.hourly.temperature_2m;
+                
+                // Находим индексы для нужных времен (8:00, 12:00, 20:00) по местному времени
+                const targetHours = [8, 12, 20];
+                const displayData = [];
+                
+                for (let i = 0; i < times.length; i++) {
+                    const date = new Date(times[i]);
+                    const hours = date.getHours();
+                    
+                    if (targetHours.includes(hours)) {
+                        displayData.push({
+                            time: `${hours}:00`,
+                            temperature: temperatures[i]
+                        });
+                    }
+                }
+                
+                // Сортируем по времени
+                displayData.sort((a, b) => a.time.localeCompare(b.time));
+                
+                // Заполняем таблицу
+                displayData.forEach(item => {
+                    const row = document.createElement('tr');
+                    
+                    const timeCell = document.createElement('td');
+                    timeCell.textContent = item.time;
+                    row.appendChild(timeCell);
+                    
+                    const tempCell = document.createElement('td');
+                    tempCell.textContent = `${item.temperature} °C`;
+                    row.appendChild(tempCell);
+                    
+                    weatherData.appendChild(row);
+                });
+                
+                if (displayData.length === 0) {
+                    weatherData.innerHTML = `
+                        <tr>
+                            <td colspan="2">Данные о температуре на сегодня недоступны</td>
+                        </tr>
+                    `;
+                }
+                
+                resultDiv.style.display = 'block';
+            })
+            .catch(function(error) {
+                weatherData.innerHTML = `
+                    <tr>
+                        <td colspan="2" style="color: #8B0000;">Ошибка: ${error.message}</td>
+                    </tr>
+                `;
+                resultDiv.style.display = 'block';
+            })
+            .finally(function() {
+                loading.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>
