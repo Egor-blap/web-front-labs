@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление блоков</title>
+    <link rel="icon" href="./favicon-48x48.ico">
+    <style>
+        div.block {
+            background-color: green;
+            height: 40px;
+            border: 2px solid darkgreen;
+            width: 80%;
+            margin: 10px auto;
+            padding: 5px;
+        }
+        
+                    header {
+                text-align: center;
+                padding: 10px;
+                background-color: hsl(199, 100%, 50%);
+                margin-bottom: 20px;
+            }
+            footer {
+                text-align: center;
+                padding: 10px;
+                background-color: hsl(199, 100%, 50%);
+                margin-top: 20px;
+            }
+            .container {
+                width: 500px;
+                margin: 0 auto;
+                padding: 20px;
+                border: 2px solid #8B0000;
+                border-radius: 10px;
+                background-color: #FFF5EE;
+                box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            }
+    </style>
+</head>
+<body>
+    <header>
+        HГТУ, ФБИ-34, Лабораторная работа 7 - Добавление блоков
+    </header>
+    <main>
+        <button onclick="addNewBlock()">Добавить блок</button>
+    </main>
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        function addNewBlock() {
+            let newBlock = document.createElement('div');
+            newBlock.className = 'block';
+            document.querySelector('main').appendChild(newBlock);
+        }
+    </script>
+</body>
+</html>
