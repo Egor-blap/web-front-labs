@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Прогноз и текущая погода в Новосибирске</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #FFF5EE;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        header {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 10px;
+            background-color: hsl(199, 100%, 50%);
+            margin-top: 20px;
+            box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .container {
+            width: 90%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 2px solid #8B0000;
+            border-radius: 10px;
+            background-color: #FFF5EE;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        
+        button {
+            background-color: #8B0000;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: block;
+            margin: 20px auto;
+        }
+        
+        button:hover {
+            background-color: #A52A2A;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+        
+        .current-weather {
+            background-color: #FFE4B5;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 20px 0;
+            box-shadow: 0 2px 3px rgba(0,0,0,0.1);
+            border: 1px solid #8B0000;
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+        }
+        
+        .weather-card {
+            background-color: #FFF5EE;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 10px;
+            min-width: 200px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #8B0000;
+        }
+        
+        .chart-container {
+            position: relative;
+            height: 400px;
+            margin: 20px 0;
+        }
+        
+        .loading {
+            text-align: center;
+            font-style: italic;
+            color: #8B0000;
+            margin: 20px 0;
+        }
+        
+        .credits {
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+        
+        .chart-title {
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>НГТУ, ФБИ-34, Лабораторная работа 7</h1>
+        <p>Прогноз и текущая погода в Новосибирске</p>
+    </header>
+    
+    <div class="container">
+        <button onclick="loadWeatherData()">Загрузить данные о погоде</button>
+        <div id="loading" class="loading" style="display: none;">Загрузка данных...</div>
+        
+        <div id="current-weather" class="current-weather" style="display: none;">
+            <div class="weather-card">
+                <h3>Текущая температура</h3>
+                <p id="current-temp">-</p>
+            </div>
+            <div class="weather-card">
+                <h3>Текущая влажность</h3>
+                <p id="current-humidity">-</p>
+            </div>
+            <div class="weather-card">
+                <h3>Ощущается как</h3>
+                <p id="current-feelslike">-</p>
+            </div>
+        </div>
+        
+        <div class="chart-container">
+            <h3 class="chart-title">Прогноз температуры на сегодня</h3>
+            <canvas id="temp-chart"></canvas>
+        </div>
+        
+        <div class="chart-container">
+            <h3 class="chart-title">Прогноз влажности на сегодня</h3>
+            <canvas id="humidity-chart"></canvas>
+        </div>
+        
+        <div class="credits">
+            <a href="https://open-meteo.com/" target="_blank">Данные предоставлены Open-Meteo.com</a>
+        </div>
+    </div>
+    
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        let tempChart, humidityChart;
+        
+        function loadWeatherData() {
+            const button = document.querySelector('button');
+            const loading = document.getElementById('loading');
+            const currentWeather = document.getElementById('current-weather');
+            
+            // Скрываем кнопку и показываем загрузку
+            button.style.display = 'none';
+            loading.style.display = 'block';
+            currentWeather.style.display = 'none';
+            
+            // Координаты Новосибирска
+            const latitude = 55.0415;
+            const longitude = 82.9346;
+            
+            // URL для запроса текущей погоды и прогноза
+            const url = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&hourly=temperature_2m,relativehumidity_2m&current_weather=true&timezone=Asia%2FBangkok&forecast_days=1`;
+            
+            fetch(url)
+            .then(function(response) {
+                if (!response.ok) {
+                    throw new Error('Ошибка загрузки данных: ' + response.status);
+                }
+                return response.json();
+            })
+            .then(function(json) {
+                // Обработка текущей погоды
+                const current = json.current_weather;
+                document.getElementById('current-temp').textContent = `${current.temperature} °C`;
+                // Влажность и ощущаемая температура не входят в current_weather, используем первый час из hourly
+                document.getElementById('current-humidity').textContent = `${json.hourly.relativehumidity_2m[0]} %`;
+                // Ощущаемая температура не доступна в базовом API, используем обычную
+                document.getElementById('current-feelslike').textContent = `${current.temperature} °C`;
+                
+                // Обработка прогноза
+                const times = json.hourly.time;
+                const temperatures = json.hourly.temperature_2m;
+                const humidities = json.hourly.relativehumidity_2m;
+                
+                // Форматируем время для отображения
+                const labels = times.map(time => {
+                    const date = new Date(time);
+                    return date.getHours() + ':00';
+                });
+                
+                // Создаем или обновляем график температуры
+                createOrUpdateChart(
+                    'temp-chart', 
+                    'Температура, °C', 
+                    temperatures, 
+                    'rgba(255, 99, 132, 0.7)'
+                );
+                
+                // Создаем или обновляем график влажности
+                createOrUpdateChart(
+                    'humidity-chart', 
+                    'Влажность, %', 
+                    humidities, 
+                    'rgba(54, 162, 235, 0.7)'
+                );
+                
+                currentWeather.style.display = 'flex';
+            })
+            .catch(function(error) {
+                alert('Ошибка при загрузке данных: ' + error.message);
+            })
+            .finally(function() {
+                loading.style.display = 'none';
+            });
+        }
+        
+        function createOrUpdateChart(canvasId, label, data, backgroundColor) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            
+            if (window[canvasId.replace('-', '')]) {
+                // Если график уже существует, обновляем его данные
+                window[canvasId.replace('-', '')].data.labels = Array.from({length: data.length}, (_, i) => i + ':00');
+                window[canvasId.replace('-', '')].data.datasets[0].data = data;
+                window[canvasId.replace('-', '')].update();
+            } else {
+                // Создаем новый график
+                window[canvasId.replace('-', '')] = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: Array.from({length: data.length}, (_, i) => i + ':00'),
+                        datasets: [{
+                            label: label,
+                            data: data,
+                            backgroundColor: backgroundColor,
+                            borderColor: backgroundColor.replace('0.7', '1'),
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: {
+                            y: {
+                                beginAtZero: false
+                            }
+                        },
+                        plugins: {
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        return `${label.split(',')[0]}: ${context.raw}`;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>
