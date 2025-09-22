@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Список книг</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="icon" href="./favicon-48x48.ico">
+    <script src="books.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #8bfe07;
+            text-align: center;
+        }
+        
+        .book {
+            margin-bottom: 15px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        .bestseller {
+            background-color: #fff8e1;
+            border-left: 4px solid #ffc107;
+        }
+        .out-of-stock {
+            color: #999;
+            opacity: 0.7;
+        }
+        .price {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+        .bestseller-badge {
+            display: inline-block;
+            background-color: #ffc107;
+            color: #333;
+            padding: 2px 5px;
+            border-radius: 3px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+        .out-of-stock-label {
+            color: #d32f2f;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body onload="showBooks()">
+    <header>
+        <h1>HГТУ, ФБИ-34, Лабораторная работа 6</h1>
+        <h1>Список книг</h1>
+    </header>
+    <main>
+        <div id="bookList"></div>
+    </main>
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        function showBooks() {
+            const bookList = document.getElementById('bookList');
+            for(let i = 0; i < books.length; i++) {
+                let bookClass = "book";
+                let bestsellerBadge = "";
+                let outOfStockLabel = "";
+                
+                if(books[i].bestseller) {
+                    bookClass += " bestseller";
+                    bestsellerBadge = '<span class="bestseller-badge">Бестселлер</span>';
+                }
+                
+                if(!books[i].inStock) {
+                    bookClass += " out-of-stock";
+                    outOfStockLabel = '<div class="out-of-stock-label">Нет в наличии</div>';
+                }
+                
+                bookList.innerHTML += `
+                    <div class="${bookClass}">
+                        <div>
+                            <b>${books[i].author}.</b>
+                            <i>${books[i].name}</i>
+                            ${bestsellerBadge}
+                        </div>
+                        <div>Год издания: ${books[i].publicationYear}</div>
+                        <div class="price">Цена: ${books[i].price} руб.</div>
+                        ${outOfStockLabel}
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
