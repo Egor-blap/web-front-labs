@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Манилов Егор Олегович, свойства дисплея</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="icon" type="image/png" href="../favicon.png">
+    <style>
+        .discount {
+            margin: 20px;
+            border: 2px solid;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+            transition: all 0.4s ease;
+        }
+
+        .discount div {
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 20px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .discount:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .discount:hover div {
+            opacity: 1;
+            max-height: 200px;
+            padding: 20px;
+        }
+
+        .discount h1 {
+            padding: 15px;
+            margin: 0;
+            cursor: pointer;
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+
+        /* Стили для 5 блоков */
+        .economic {
+            border-color: #3498db;
+        }
+        .economic h1 {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+        }
+
+        .game-theory {
+            border-color: #e74c3c;
+        }
+        .game-theory h1 {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+        }
+
+        .finance {
+            border-color: #2ecc71;
+        }
+        .finance h1 {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+        }
+
+        .marketing {
+            border-color: #f1c40f;
+        }
+        .marketing h1 {
+            background: linear-gradient(135deg, #f1c40f, #f39c12);
+        }
+
+        .crypto {
+            border-color: #9b59b6;
+        }
+        .crypto h1 {
+            background: linear-gradient(135deg, #9b59b6, #8e44ad);
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <!-- Блок 1 -->
+        <div class="discount economic">
+            <h1>Залоговый дисконт</h1>
+            <div>Разница между рыночной и залоговой стоимостью имущества.</div>
+        </div>
+
+        <!-- Блок 2 -->
+        <div class="discount game-theory">
+            <h1>Дисконт в теории игр</h1>
+            <div>Текущая стоимость денег с учётом вероятности повторения игры.</div>
+        </div>
+
+        <!-- Блок 3 -->
+        <div class="discount finance">
+            <h1>Финансовый дисконт</h1>
+            <div>Разница между номинальной и реальной стоимостью инструмента.</div>
+        </div>
+
+        <!-- Блок 4 -->
+        <div class="discount marketing">
+            <h1>Маркетинговый дисконт</h1>
+            <div>Скидки для стимулирования спроса и увеличения продаж.</div>
+        </div>
+
+        <!-- Блок 5 -->
+        <div class="discount crypto">
+            <h1>Криптовалютный дисконт</h1>
+            <div>Разница между биржевой и p2p-стоимостью цифровых активов.</div>
+        </div>
+    </main>
+
+    <footer>
+        <p>Манилов Егор Олегович, ФБИ-34</p>
+    </footer>
+</body>
+</html>
