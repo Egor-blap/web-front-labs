@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Манилов Егор Олегович. Лабораторная работа 5 - Круги</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon-16x16.png">
+    <link rel="icon" href="../favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        header, footer {
+            background-color: #006aff;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        main {
+            position: relative;
+            height: 500px;
+            border: 1px dashed #ccc;
+            margin-bottom: 20px;
+        }
+        .circle {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 24px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.5s ease;
+            box-shadow: 0 0 5px rgba(0,0,0,0.3);
+        }
+        .reset-btn {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 0 auto;
+            display: block;
+        }
+        .reset-btn:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        НГТУ, ФБ, Лабораторная работа 5 - Круги
+        <hr>
+    </header>
+
+    <main id="circles-container">
+      
+    </main>
+
+    <button class="reset-btn" id="reset-btn">Восстановить круги</button>
+
+    <footer>
+        <hr>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const colors = [
+                '#FF5733', '#33FF57', '#3357FF', '#F3FF33', 
+                '#FF33F3', '#33FFF3', '#FF8C33', '#8C33FF',
+                '#33FF8C', '#FF338C'
+            ];
+            const container = document.getElementById('circles-container');
+            const containerWidth = container.offsetWidth - 80;
+            const containerHeight = container.offsetHeight - 80;
+
+            // Создаем 10 кругов
+            for (let i = 1; i <= 10; i++) {
+                const circle = document.createElement('div');
+                circle.className = 'circle';
+                circle.textContent = i;
+                circle.style.backgroundColor = colors[i-1];
+                
+                // Случайное позиционирование
+                circle.style.left = Math.random() * containerWidth + 'px';
+                circle.style.top = Math.random() * containerHeight + 'px';
+                
+                // Обработчик клика
+                circle.addEventListener('click', function() {
+                    this.style.width = '0';
+                    this.style.height = '0';
+                    this.style.opacity = '0';
+                    this.style.fontSize = '0';
+                });
+                
+                container.appendChild(circle);
+            }
+
+            // Кнопка восстановления
+            document.getElementById('reset-btn').addEventListener('click', function() {
+                const circles = document.querySelectorAll('.circle');
+                circles.forEach(circle => {
+                    circle.style.width = '80px';
+                    circle.style.height = '80px';
+                    circle.style.opacity = '1';
+                    circle.style.fontSize = '24px';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
