@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Текущая дата</title>
+    <link rel="icon" href="../favicon-48x48.ico">
+    <link rel="stylesheet" href="../main.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        main {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #header h1 {
+            color: #8bfe07;
+            text-align: center;
+            transition: color 0.5s ease; /* Добавлено для плавного изменения цвета */
+        }
+        .date-container {
+            margin-bottom: 30px;
+            padding: 15px;
+            background-color: #f5f5f5;
+            border-radius: 5px;
+        }
+        .date-item {
+            margin-bottom: 10px;
+            padding: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+        .locale-name {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            padding: 8px 16px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #95a5a6;
+            cursor: not-allowed;
+        }
+        footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #09d8e7;
+            font-size: 0.9em;
+        }
+    </style>
+</head>
+<body onload="showDate()">
+    <header id="header">
+        <h1>HГТУ, ФБИ-34, Лабораторная работа 6</h1>
+        <h1>Текущая дата и время</h1>
+    </header>
+
+    <main>
+        <div id="current-date" class="date-container">
+            <div class="date-item">
+                <span class="locale-name">Текущая дата (Русский):</span>
+                <span id="date-ru"></span>
+            </div>
+            <div class="date-item">
+                <span class="locale-name">Current date (English):</span>
+                <span id="date-en"></span>
+            </div>
+            <div class="date-item">
+                <span class="locale-name">当前日期 (中文):</span>
+                <span id="date-zh"></span>
+            </div>
+            <div class="date-item">
+                <span class="locale-name">今日の日付 (日本語):</span>
+                <span id="date-ja"></span>
+            </div>
+            <div class="date-item">
+                <span class="locale-name">Fecha actual (Español):</span>
+                <span id="date-es"></span>
+            </div>
+            <div class="date-item">
+                <span class="locale-name">Date actuelle (Français):</span>
+                <span id="date-fr"></span>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button onclick="startChangeColors()" id="start-btn">Старт</button>
+            <button onclick="stopChangeColors()" disabled id="stop-btn">Стоп</button>
+            <button onclick="startUpdateTime()" id="start-time-btn">Обновлять время</button>
+            <button onclick="stopUpdateTime()" disabled id="stop-time-btn">Остановить</button>
+        </div>
+    </main>
+
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+
+    <script>
+        // Глобальные переменные для таймеров
+        let colorInterval;
+        let timeInterval;
+
+        // Функция для отображения даты в разных локалях
+        function showDate() {
+            const today = new Date();
+            
+            document.getElementById('date-ru').textContent = today.toLocaleString('ru-RU');
+            document.getElementById('date-en').textContent = today.toLocaleString('en-US');
+            document.getElementById('date-zh').textContent = today.toLocaleString('zh-CN');
+            document.getElementById('date-ja').textContent = today.toLocaleString('ja-JP');
+            document.getElementById('date-es').textContent = today.toLocaleString('es-ES');
+            document.getElementById('date-fr').textContent = today.toLocaleString('fr-FR');
+        }
+
+        function changeColors() {
+            const headers = document.querySelectorAll('#header h1'); // Выбираем все h1 внутри header
+            const r = Math.floor(Math.random() * 256);
+            const g = Math.floor(Math.random() * 256);
+            const b = Math.floor(Math.random() * 256);
+            
+            headers.forEach(header => {
+                header.style.color = `rgb(${r}, ${g}, ${b})`;
+            });
+        }
+
+        function startChangeColors() {
+            changeColors(); // меняем цвет сразу
+            colorInterval = setInterval(changeColors, 1000); // интервал 1 сек
+            document.getElementById('start-btn').disabled = true;
+            document.getElementById('stop-btn').disabled = false;
+        }
+
+        function stopChangeColors() {
+            clearInterval(colorInterval);
+            document.getElementById('start-btn').disabled = false;
+            document.getElementById('stop-btn').disabled = true;
+        }
+
+        // Функции для управления обновлением времени
+        function startUpdateTime() {
+            showDate();
+            timeInterval = setInterval(showDate, 1000);
+            document.getElementById('start-time-btn').disabled = true;
+            document.getElementById('stop-time-btn').disabled = false;
+        }
+
+        function stopUpdateTime() {
+            clearInterval(timeInterval);
+            document.getElementById('start-time-btn').disabled = false;
+            document.getElementById('stop-time-btn').disabled = true;
+        }
+    </script>
+</body>
+</html>
