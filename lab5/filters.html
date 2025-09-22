@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Манилов Егор Олегович. Лабораторная работа 5</title>
+        <link rel="stylesheet" href="../main.css">
+        <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+        <link rel="icon" href="../favicon-16x16.png">
+        <link rel="icon" href="../favicon-32x32.png">
+        <style>
+            div {
+                text-align: center;
+                margin: 15px 0;
+            }
+            img {
+                width: 50%;
+                max-width: 600px;
+                margin: 20px auto;
+                display: block;
+                transition: filter 0.3s ease;
+            }
+            .filter-control {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 10px;
+            }
+            .filter-control span {
+                min-width: 50px;
+                text-align: left;
+            }
+        </style>
+        <script>
+            // Объект для хранения текущих значений фильтров
+            const filters = {
+                blur: '0px',
+                brightness: '100%',
+                contrast: '100%',
+                grayscale: '0%',
+                hueRotate: '0deg',
+                invert: '0%',
+                saturate: '100%',
+                sepia: '0%'
+            };
+
+            function updateImage() {
+                const image = document.getElementById('filteredImage');
+                // Собираем все активные фильтры в одну строку
+                const filterString = `
+                    blur(${filters.blur})
+                    brightness(${filters.brightness})
+                    contrast(${filters.contrast})
+                    grayscale(${filters.grayscale})
+                    hue-rotate(${filters.hueRotate})
+                    invert(${filters.invert})
+                    saturate(${filters.saturate})
+                    sepia(${filters.sepia})
+                `;
+                image.style.filter = filterString;
+            }
+
+            function blurChange() {
+                filters.blur = document.getElementById('blurValue').value + 'px';
+                document.getElementById('blurOutput').innerText = filters.blur;
+                updateImage();
+            }
+
+            function brightnessChange() {
+                filters.brightness = document.getElementById('brightnessValue').value + '%';
+                document.getElementById('brightnessOutput').innerText = filters.brightness;
+                updateImage();
+            }
+
+            function contrastChange() {
+                filters.contrast = document.getElementById('contrastValue').value + '%';
+                document.getElementById('contrastOutput').innerText = filters.contrast;
+                updateImage();
+            }
+
+            function grayscaleChange() {
+                filters.grayscale = document.getElementById('grayscaleValue').value + '%';
+                document.getElementById('grayscaleOutput').innerText = filters.grayscale;
+                updateImage();
+            }
+
+            function hueRotateChange() {
+                filters.hueRotate = document.getElementById('hueRotateValue').value + 'deg';
+                document.getElementById('hueRotateOutput').innerText = filters.hueRotate;
+                updateImage();
+            }
+
+            function invertChange() {
+                filters.invert = document.getElementById('invertValue').value + '%';
+                document.getElementById('invertOutput').innerText = filters.invert;
+                updateImage();
+            }
+
+            function saturateChange() {
+                filters.saturate = document.getElementById('saturateValue').value + '%';
+                document.getElementById('saturateOutput').innerText = filters.saturate;
+                updateImage();
+            }
+
+            function sepiaChange() {
+                filters.sepia = document.getElementById('sepiaValue').value + '%';
+                document.getElementById('sepiaOutput').innerText = filters.sepia;
+                updateImage();
+            }
+        </script>
+    </head>
+    <body>
+        <header>
+            НГТУ, ФБ, Лабораторная работа 5
+            <hr>
+        </header>
+
+        <main>
+            <div class="filter-control">
+                <span>Фильтр blur:</span>
+                <input type="range" value="0" min="0" max="20" oninput="blurChange()" id="blurValue">
+                <span id="blurOutput">0px</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр brightness:</span>
+                <input type="range" value="100" min="0" max="500" step="1" oninput="brightnessChange()" id="brightnessValue">
+                <span id="brightnessOutput">100%</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр contrast:</span>
+                <input type="range" value="100" min="0" max="500" step="1" oninput="contrastChange()" id="contrastValue">
+                <span id="contrastOutput">100%</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр grayscale:</span>
+                <input type="range" value="0" min="0" max="100" step="1" oninput="grayscaleChange()" id="grayscaleValue">
+                <span id="grayscaleOutput">0%</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр hue-rotate:</span>
+                <input type="range" value="0" min="0" max="360" step="1" oninput="hueRotateChange()" id="hueRotateValue">
+                <span id="hueRotateOutput">0deg</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр invert:</span>
+                <input type="range" value="0" min="0" max="100" step="1" oninput="invertChange()" id="invertValue">
+                <span id="invertOutput">0%</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр saturate:</span>
+                <input type="range" value="100" min="0" max="500" step="1" oninput="saturateChange()" id="saturateValue">
+                <span id="saturateOutput">100%</span>
+            </div>
+
+            <div class="filter-control">
+                <span>Фильтр sepia:</span>
+                <input type="range" value="0" min="0" max="100" step="1" oninput="sepiaChange()" id="sepiaValue">
+                <span id="sepiaOutput">0%</span>
+            </div>
+
+            <img src="diplomat.jpg" id="filteredImage">
+        </main>
+
+        <footer>
+            <hr>
+            &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025 
+        </footer>
+    </body>
+</html>
