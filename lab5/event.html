@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабораторная работа 5</title>
+    <link rel="stylesheet" href="../main.css">
+    <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="icon" href="../favicon-16x16.png">
+    <link rel="icon" href="../favicon-32x32.png">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        header, footer {
+            text-align: center;
+            padding: 10px;
+            background-color: #f0f0f0;
+            margin-bottom: 20px;
+        }
+        
+        #block {
+            width: 100px;
+            height: 100px;
+            border: 2px solid #333;
+            background-color: #f8f8f8;
+            cursor: crosshair;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 10px;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        HГТУ, ФБ, Лабораторная работа 5
+    </header>
+
+    <main>
+        <div id="block" onmousemove="showCoords()">Наведите курсор</div>
+    </main>
+
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025 
+    </footer>
+
+    <script>
+        function showCoords() {
+            let x = this.event.x;
+            let y = this.event.y;
+            let div = document.getElementById('block');
+            
+            // Проверяем нажатые клавиши
+            let ctrlPressed = this.event.ctrlKey;
+            let altPressed = this.event.altKey;
+            let shiftPressed = this.event.shiftKey;
+            
+            // Формируем текст с информацией о нажатых клавишах
+            let keysInfo = '';
+            if (ctrlPressed) keysInfo += 'Нажата клавиша Ctrl<br>';
+            if (altPressed) keysInfo += 'Нажата клавиша Alt<br>';
+            if (shiftPressed) keysInfo += 'Нажата клавиша Shift<br>';
+            
+            // Устанавливаем текст в блок
+            div.innerHTML = '<b>x</b> = ' + x + 'px<br><b>y</b> = ' + y + 'px<br>' + keysInfo;
+            
+            // Меняем стили в зависимости от нажатых клавиш
+            if (ctrlPressed) {
+                div.style.color = 'red';
+            } else {
+                div.style.color = 'black';
+            }
+            
+            if (altPressed) {
+                div.style.backgroundColor = '#ffe0e0';
+                div.style.borderColor = '#ff0000';
+            } else {
+                div.style.backgroundColor = '#f8f8f8';
+                div.style.borderColor = '#333';
+            }
+            
+            if (shiftPressed) {
+                div.style.fontWeight = 'bold';
+                div.style.fontSize = '14px';
+            } else {
+                div.style.fontWeight = 'normal';
+                div.style.fontSize = '12px';
+            }
+        }
+    </script>
+</body>
+</html> 
