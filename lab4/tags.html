@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Облако тегов CSS с анимацией</title>
+    <link rel="stylesheet" href="../main.css">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            padding: 20px;
+            overflow: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        
+        .tag-cloud {
+            width: 90%;
+            height: 600px;
+            margin: 0 auto;
+            position: relative;
+            border: 1px dashed #ccc;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.7);
+            overflow: hidden;
+        }
+        
+        .tag {
+            position: absolute;
+            padding: 5px 10px;
+            border-radius: 15px;
+            transition: all 0.3s ease;
+            cursor: default;
+            white-space: nowrap;
+            animation-timing-function: ease-in-out;
+            animation-iteration-count: infinite;
+            animation-direction: alternate;
+        }
+        
+        .tag:hover {
+            transform: scale(1.5) !important;
+            z-index: 100;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation-play-state: paused !important;
+        }
+        
+        /* Индивидуальные анимации для каждого тега */
+        .tag-1 {
+            color: #FF5733; font-size: 75px;
+            animation: float1 15s infinite alternate;
+        }
+        .tag-2 {
+            color: #33FF57; font-size: 92px;
+            animation: float2 18s infinite alternate;
+        }
+        .tag-3 {
+            color: #3357FF; font-size: 50px;
+            animation: float3 12s infinite alternate;
+        }
+        .tag-4 {
+            color: #F333FF; font-size: 45px;
+            animation: float4 20s infinite alternate;
+        }
+        .tag-5 {
+            color: #33FFF5; font-size: 98px;
+            animation: float5 14s infinite alternate;
+        }
+        .tag-6 {
+            color: #FF33F5; font-size: 62px;
+            animation: float6 25s infinite alternate;
+        }
+        .tag-7 {
+            color: #8A2BE2; font-size: 70px;
+            animation: float7 16s infinite alternate;
+        }
+        .tag-8 {
+            color: #A52A2A; font-size: 84px;
+            animation: float8 22s infinite alternate;
+        }
+        .tag-9 {
+            color: #DEB887; font-size: 63px;
+            animation: float9 19s infinite alternate;
+        }
+        .tag-10 {
+            color: #5F9EA0; font-size: 72px;
+            animation: float10 13s infinite alternate;
+        }
+        .tag-11 {
+            color: #D2691E; font-size: 53px;
+            animation: float11 17s infinite alternate;
+        }
+        .tag-12 {
+            color: #6495ED; font-size: 89px;
+            animation: float12 21s infinite alternate;
+        }
+        .tag-13 {
+            color: #DC143C; font-size: 86px;
+            animation: float13 14s infinite alternate;
+        }
+        .tag-14 {
+            color: #008B8B; font-size: 58px;
+            animation: float14 18s infinite alternate;
+        }
+        .tag-15 {
+            color: #B8860B; font-size: 79px;
+            animation: float15 24s infinite alternate;
+        }
+
+        /* Определение ключевых кадров для анимаций */
+        @keyframes float1 {
+            0% { top: 10%; left: 5%; transform: rotate(-5deg); }
+            100% { top: 30%; left: 25%; transform: rotate(5deg); }
+        }
+        @keyframes float2 {
+            0% { top: 15%; left: 30%; transform: rotate(3deg); }
+            100% { top: 45%; left: 60%; transform: rotate(-3deg); }
+        }
+        @keyframes float3 {
+            0% { top: 20%; left: 15%; transform: rotate(-2deg); }
+            100% { top: 50%; left: 45%; transform: rotate(2deg); }
+        }
+        @keyframes float4 {
+            0% { top: 5%; left: 70%; transform: rotate(5deg); }
+            100% { top: 35%; left: 40%; transform: rotate(-5deg); }
+        }
+        @keyframes float5 {
+            0% { top: 60%; left: 10%; transform: rotate(-3deg); }
+            100% { top: 30%; left: 30%; transform: rotate(3deg); }
+        }
+        @keyframes float6 {
+            0% { top: 40%; left: 80%; transform: rotate(7deg); }
+            100% { top: 70%; left: 50%; transform: rotate(-7deg); }
+        }
+        @keyframes float7 {
+            0% { top: 70%; left: 20%; transform: rotate(-8deg); }
+            100% { top: 40%; left: 50%; transform: rotate(8deg); }
+        }
+        @keyframes float8 {
+            0% { top: 10%; left: 50%; transform: rotate(2deg); }
+            100% { top: 40%; left: 80%; transform: rotate(-2deg); }
+        }
+        @keyframes float9 {
+            0% { top: 80%; left: 30%; transform: rotate(-10deg); }
+            100% { top: 50%; left: 60%; transform: rotate(10deg); }
+        }
+        @keyframes float10 {
+            0% { top: 60%; left: 70%; transform: rotate(4deg); }
+            100% { top: 30%; left: 40%; transform: rotate(-4deg); }
+        }
+        @keyframes float11 {
+            0% { top: 20%; left: 85%; transform: rotate(-7deg); }
+            100% { top: 50%; left: 55%; transform: rotate(7deg); }
+        }
+        @keyframes float12 {
+            0% { top: 50%; left: 60%; transform: rotate(6deg); }
+            100% { top: 80%; left: 30%; transform: rotate(-6deg); }
+        }
+        @keyframes float13 {
+            0% { top: 70%; left: 15%; transform: rotate(-4deg); }
+            100% { top: 40%; left: 45%; transform: rotate(4deg); }
+        }
+        @keyframes float14 {
+            0% { top: 90%; left: 40%; transform: rotate(8deg); }
+            100% { top: 60%; left: 70%; transform: rotate(-8deg); }
+        }
+        @keyframes float15 {
+            0% { top: 30%; left: 90%; transform: rotate(-6deg); }
+            100% { top: 60%; left: 60%; transform: rotate(6deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        НГТУ, ФБ, Лабораторная работа 4
+    </header>
+    
+    <h1>CSS. Позиционирование (анимированное облако тегов)</h1>
+    
+    <div class="tag-cloud">
+        <div class="tag tag-1">width</div>
+        <div class="tag tag-2">top</div>
+        <div class="tag tag-3">clear</div>
+        <div class="tag tag-4">BEd</div>
+        <div class="tag tag-5">margin</div>
+        <div class="tag tag-6">padding</div>
+        <div class="tag tag-7">height</div>
+        <div class="tag tag-8">relative</div>
+        <div class="tag tag-9">right</div>
+        <div class="tag tag-10">position</div>
+        <div class="tag tag-11">absolute</div>
+        <div class="tag tag-12">fixed</div>
+        <div class="tag tag-13">sticky</div>
+        <div class="tag tag-14">z-index</div>
+        <div class="tag tag-15">overflow</div>
+    </div>
+    
+    <footer>
+        &copy; Манилов Егор Олегович, ФБИ-34, 2 курс, 2025
+    </footer>
+</body>
+</html>
