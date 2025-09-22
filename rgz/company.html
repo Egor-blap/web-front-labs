@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>ЭЛ5-Энерго | О компании</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      line-height: 1.6;
+      background-color: #f5f5f5; /* светло-серый фон */
+    }
+    header, nav, footer {
+      background-color: #333; /* тёмно-серый */
+      color: white;
+      padding: 15px;
+      text-align: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: white;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 5px;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    nav a:hover {
+      background-color: #ccc;
+      color: #333;
+      transform: translateY(-3px);
+    }
+    nav a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: 0;
+      left: 0;
+      background-color: #ccc;
+      transition: width 0.3s ease;
+    }
+    nav a:hover::after {
+      width: 100%;
+    }
+    section {
+      padding: 60px 20px;
+      max-width: 1000px;
+      margin: auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+    h1, h2 {
+      color: #444;
+      text-align: center;
+      position: relative;
+      padding-bottom: 10px;
+    }
+    h1::after, h2::after {
+      content: '';
+      position: absolute;
+      width: 100px;
+      height: 3px;
+      background-color: #ccc;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    .logo {
+      height: 150px;
+      transition: transform 0.5s ease;
+    }
+    .logo:hover {
+      transform: rotate(5deg) scale(1.05);
+    }
+    .image-wide,
+    .image-portrait {
+      width: 100%;
+      max-width: 800px;
+      height: auto;
+      display: block;
+      margin: 30px auto;
+      border-radius: 10px;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .image-wide:hover,
+    .image-portrait:hover {
+      transform: scale(1.02);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+    }
+    .scroll-top {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 1000;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      opacity: 0;
+      visibility: hidden;
+    }
+    .scroll-top.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+    .scroll-top:hover {
+      background-color: #ccc;
+      color: #333;
+      transform: translateY(-5px);
+    }
+    .highlight {
+      color: #333;
+      font-weight: bold;
+      position: relative;
+      display: inline-block;
+    }
+    .highlight::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 3px;
+      background-color: #ccc;
+      bottom: -2px;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.3s ease;
+    }
+    .highlight:hover::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+    .mission-text {
+      font-size: 1.1em;
+      line-height: 1.8;
+      padding: 20px;
+      background-color: #eee;
+      border-left: 4px solid #ccc;
+      border-radius: 0 5px 5px 0;
+      transition: all 0.3s ease;
+    }
+    .mission-text:hover {
+      background-color: #e0e0e0;
+      transform: translateX(5px);
+    }
+    figcaption {
+      text-align: center;
+      font-style: italic;
+      color: #666;
+      margin-top: 10px;
+      transition: color 0.3s ease;
+    }
+    figure:hover figcaption {
+      color: #333;
+    }
+    ul {
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 10px;
+      position: relative;
+      padding-left: 20px;
+      transition: all 0.3s ease;
+    }
+    li::before {
+      content: '⚪';
+      position: absolute;
+      left: 0;
+      color: #ccc;
+    }
+    li:hover {
+      transform: translateX(5px);
+      color: #333;
+    }
+    a {
+      color: #333;
+      font-weight: bold;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    a::after {
+      content: '';
+      position: absolute;
+      width: 0;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: #ccc;
+      transition: width 0.3s ease;
+    }
+    a:hover {
+      color: #666;
+    }
+    a:hover::after {
+      width: 100%;
+    }
+    footer {
+      margin-top: 50px;
+      padding: 20px;
+      font-size: 0.9em;
+    }
+
+    /* Бургер */
+    .hamburger {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 10px;
+    }
+    .hamburger div {
+      width: 30px;
+      height: 4px;
+      background-color: #fff;
+      margin: 5px 0;
+      transition: 0.4s;
+    }
+
+    /* Боковое меню */
+    .side-menu {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      right: -250px;
+      background-color: #333;
+      color: white;
+      overflow-x: hidden;
+      padding-top: 60px;
+      transition: right 0.4s;
+      z-index: 1000;
+    }
+    .side-menu a {
+      display: block;
+      color: white;
+      padding: 15px 20px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .side-menu a:hover {
+      background-color: #ccc;
+      color: #333;
+    }
+    .side-menu.open {
+      right: 0;
+    }
+  </style>
+</head>
+<body>
+
+<header class="animate__animated animate__fadeInDown">
+  <img src="el5.jpg" alt="Логотип ЭЛ5-Энерго" class="logo">
+  <h1 class="animate__animated animate__fadeIn">ЭЛ5-Энерго</h1>
+</header>
+
+<!-- Кнопка бургер -->
+<button class="hamburger" onclick="toggleMenu()">
+  <div></div>
+  <div></div>
+  <div></div>
+</button>
+
+<div class="side-menu" id="sideMenu">
+  <a href="news.html">Новости</a>
+  <a href="currency.html">Курс валют</a>
+  <a href="contacts.html">Контакты</a>
+  <a href="video.html">Видео</a>
+</div>
+
+<section class="animate__animated animate__fadeIn animate__delay-1s">
+  <h2>Краткая история</h2>
+  <p><span class="highlight">ЭЛ5-Энерго</span> — российская энергетическая компания, специализирующаяся на производстве и поставке электроэнергии. Основана в <span class="highlight">2005 году</span>. Компания является преемником активов <span class="highlight">Enel Russia</span> и успешно работает в области <span class="highlight">возобновляемых источников энергии</span>.</p>
+  <figure>
+    <img src="cennosti.png" alt="Ценности компании" class="image-wide">
+    <figcaption>Основные ценности компании ЭЛ5-Энерго</figcaption>
+  </figure>
+  <p>Подробности можно найти на <a href="https://www.el5-energo.ru/" target="_blank">официальном сайте ЭЛ5-Энерго</a>.</p>
+</section>
+
+<section class="animate__animated animate__fadeIn animate__delay-1s">
+  <h2>Направления деятельности</h2>
+  <ul>
+    <li><span class="highlight">Генерация электроэнергии</span> на ТЭС и ВЭС</li>
+    <li><span class="highlight">Инвестиции</span> в экологически чистую энергетику</li>
+    <li><span class="highlight">Цифровизация</span> энергетических процессов</li>
+  </ul>
+  <figure>
+    <img src="directorr.jpg" alt="Генеральный директор - Алибек Тналин" class="image-portrait">
+    <figcaption>Генеральный директор компании ЭЛ5-Энерго</figcaption>
+  </figure>
+</section>
+
+<section class="animate__animated animate__fadeIn animate__delay-1s">
+  <h2>Основатели и миссия</h2>
+  <p class="mission-text">Компания была основана командой профессионалов из отрасли, включая <span class="highlight">Алексея Петрова</span> и <span class="highlight">Марину Орлову</span>. Наша миссия — <span class="highlight">создание устойчивой энергетики будущего</span>, основанной на инновациях и заботе об экологии.</p>
+  <figure>
+    <img src="slogan.jpg" alt="Слоган компании" class="image-wide">
+    <figcaption>Наш слоган: "Энергия будущего - сегодня!"</figcaption>
+  </figure>
+</section>
+
+<button class="scroll-top" onclick="window.scrollTo({ top: 0, behavior: 'smooth' });">↑</button>
+
+<footer class="animate__animated animate__fadeIn animate__delay-1s">
+  &copy; 2025 ЭЛ5-Энерго | Манилов Егор Олегович
+</footer>
+
+<script>
+  // Анимация при загрузке страницы
+  document.addEventListener('DOMContentLoaded', function() {
+    const highlights = document.querySelectorAll('.highlight');
+    highlights.forEach((el, index) => {
+      setTimeout(() => {
+        el.style.animation = 'highlightPulse 1.5s ease-out';
+      }, index * 200);
+    });
+  });
+
+  // Добавляем стиль для анимации пульсации
+  const style = document.createElement('style');
+  style.innerHTML = `
+    @keyframes highlightPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); color: #ccc; }
+      100% { transform: scale(1); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Бургер-меню
+  function toggleMenu() {
+    const menu = document.querySelector('.side-menu');
+    menu.classList.toggle('open');
+  }
+
+  // Кнопка «наверх»
+  const scrollTopBtn = document.createElement('button');
+  scrollTopBtn.innerHTML = '↑';
+  scrollTopBtn.classList.add('scroll-top');
+  document.body.appendChild(scrollTopBtn);
+
+  scrollTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 300) {
+      scrollTopBtn.classList.add('visible');
+    } else {
+      scrollTopBtn.classList.remove('visible');
+    }
+  });
+</script>
+
+</body>
+</html>
